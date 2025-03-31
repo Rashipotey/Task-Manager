@@ -60,18 +60,26 @@ function TaskList() {
   }
 
   const handleDelete = async (taskId) => {
-    dispatch(removeTaskFromFirestore(taskId))
-    dispatch(clearSelectedTask())
+    if (userId) {
+      dispatch(removeTaskFromFirestore({ taskId, userId })) 
+      dispatch(clearSelectedTask())
+    } else {
+      console.error("User ID is not defined!")
+    }
   }
-
+  
   const handleToggleComplete = async (task) => {
-    dispatch(
-      updateTaskInFirestore({
+    if (userId) {
+      const updatedTask = {
         ...task,
         completed: !task.completed,
-      }),
-    )
+      }
+      dispatch(updateTaskInFirestore({ taskData: updatedTask, userId })) 
+    } else {
+      console.error("User ID is not defined!")
+    }
   }
+  
 
   return (
     <Paper sx={{ p: 2, mt: 2 }}>

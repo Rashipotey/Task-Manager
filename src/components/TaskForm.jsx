@@ -102,12 +102,12 @@ function TaskForm() {
   }
 
   const handleDeleteSelected = () => {
-    if (selectedTask) {
-      dispatch(removeTaskFromFirestore(selectedTask.id))
+    if (selectedTask && userId) {
+      dispatch(removeTaskFromFirestore({ taskId: selectedTask.id, userId })) 
       resetForm()
       dispatch(clearSelectedTask())
     } else {
-      alert("No task selected to delete!")
+      alert("No task selected or user not authenticated!")
     }
   }
 
