@@ -2,27 +2,39 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { collection, addDoc, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
 
-export const addTaskToFirestore = createAsyncThunk("tasks/addTaskToFirestore", async (taskData) => {
-  const docRef = await addDoc(collection(db, "tasks"), taskData)
-  return { id: docRef.id, ...taskData }
-})
+export const addTaskToFirestore = createAsyncThunk(
+  "tasks/addTaskToFirestore",
+  async ({ taskData, userId }) => {
+    const docRef = await addDoc(collection(db, `users/${userId}/tasks`), taskData)
+    return { id: docRef.id, ...taskData }
+  }
+)
 
-export const fetchTasksFromFirestore = createAsyncThunk("tasks/fetchTasksFromFirestore", async () => {
-  const querySnapshot = await getDocs(collection(db, "tasks"))
-  const tasks = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-  return tasks
-})
+export const fetchTasksFromFirestore = createAsyncThunk(
+  "tasks/fetchTasksFromFirestore",
+  async (userId) => {
+    const querySnapshot = await getDocs(collection(db, `users/${userId}/tasks`))
+    const tasks = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+    return tasks
+  }
+)
 
-export const updateTaskInFirestore = createAsyncThunk("tasks/updateTaskInFirestore", async (taskData) => {
-  const taskRef = doc(db, "tasks", taskData.id)
-  await updateDoc(taskRef, taskData)
-  return taskData
-})
+export const updateTaskInFirestore = createAsyncThunk(
+  "tasks/updateTaskInFirestore",
+  async ({ taskData, userId }) => {
+    const taskRef = doc(db, `users/${userId}/tasks`, taskData.id)
+    await updateDoc(taskRef, taskData)
+    return taskData
+  }
+)
 
-export const removeTaskFromFirestore = createAsyncThunk("tasks/removeTaskFromFirestore", async (taskId) => {
-  await deleteDoc(doc(db, "tasks", taskId))
-  return taskId
-})
+export const removeTaskFromFirestore = createAsyncThunk(
+  "tasks/removeTaskFromFirestore",
+  async ({ taskId, userId }) => {
+    await deleteDoc(doc(db, `users/${userId}/tasks`, taskId))
+    return taskId
+  }
+)
 
 const initialState = {
   tasks: [], 

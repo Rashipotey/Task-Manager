@@ -23,13 +23,15 @@ import {
 
 function TaskList() {
   const dispatch = useDispatch()
-
+  const userId = useSelector((state) => state.auth.user?.uid)
   const tasks = useSelector((state) => (Array.isArray(state.tasks?.tasks) ? state.tasks.tasks : []))
   const { status, sortBy, priority } = useSelector((state) => state.filters)
 
   useEffect(() => {
-    dispatch(fetchTasksFromFirestore())
-  }, [dispatch])
+    if (userId) {
+      dispatch(fetchTasksFromFirestore(userId))
+    }
+  }, [dispatch, userId])
 
   useEffect(() => {
     console.log("Updated tasks:", tasks)

@@ -36,6 +36,7 @@ function TaskForm() {
   const navigate = useNavigate()
   const tasks = useSelector((state) => (Array.isArray(state.tasks?.tasks) ? state.tasks.tasks : []))
   const selectedTask = useSelector((state) => state.tasks.selectedTask)
+  const userId = useSelector((state) => state.auth.user?.uid)
 
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
@@ -88,7 +89,7 @@ function TaskForm() {
         }),
       )
     } else {
-      dispatch(addTaskToFirestore(taskData))
+      dispatch(addTaskToFirestore({ taskData, userId }))
     }
 
     resetForm()
