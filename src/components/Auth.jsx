@@ -1,9 +1,19 @@
 import { useDispatch } from "react-redux"
 import { setUser, setLoading, setError } from "../redux/authSlice"
 import { googleSignIn, emailSignIn, emailSignUp } from "../services/authServices"
-import { Button, TextField, Box, Typography } from "@mui/material"
+import {
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  IconButton,
+  Divider,
+} from "@mui/material"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import GoogleIcon from "@mui/icons-material/Google"
 
 const serializeUser = (user) => {
   return {
@@ -53,49 +63,100 @@ function Auth() {
   }
 
   return (
-    <Box sx={{ mt: 3, textAlign: "center" }}>
-      <Typography variant="h5">{isSignUp ? "Sign Up" : "Login"}</Typography>
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#F3F4F6",
+      }}
+    >
+      <Card
+        sx={{
+          width: { xs: "90%", sm: "400px" },
+          boxShadow: 3,
+          borderRadius: 3,
+          padding: 3,
+          backgroundColor: "#fff",
+        }}
+      >
+        <CardContent>
+          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2, textAlign: "center" }}>
+            {isSignUp ? "Create an Account" : "Welcome Back!"}
+          </Typography>
 
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 2, alignItems: "center" }}>
-        <TextField
-          label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          sx={{ width: "75%", mx: "auto" }}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          sx={{ width: "75%", mx: "auto" }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleEmailAuth}
-          sx={{ width: "75%", mx: "auto" }}
-        >
-          {isSignUp ? "Sign Up" : "Login"}
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={handleGoogleSignIn}
-          sx={{ width: "75%", mx: "auto" }}
-        >
-          Sign in with Google
-        </Button>
-        <Typography
-          variant="body2"
-          sx={{ cursor: "pointer", mt: 1 }}
-          onClick={() => setIsSignUp(!isSignUp)}
-        >
-          {isSignUp
-            ? "Already have an account? Login"
-            : "Don't have an account? Sign Up"}
-        </Typography>
-      </Box>
+          <Divider sx={{ mb: 3 }} />
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <TextField
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+              variant="outlined"
+            />
+            <TextField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              fullWidth
+              variant="outlined"
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleEmailAuth}
+              sx={{
+                mt: 1,
+                py: 1.5,
+                textTransform: "none",
+                fontWeight: "bold",
+                ":hover": {
+                  backgroundColor: "#1e88e5",
+                },
+              }}
+            >
+              {isSignUp ? "Sign Up" : "Login"}
+            </Button>
+
+            <IconButton
+              onClick={handleGoogleSignIn}
+              sx={{
+                backgroundColor: "#fff",
+                border: "1px solid #ccc",
+                mt: 1,
+                py: 1.2,
+                ":hover": {
+                  backgroundColor: "#f5f5f5",
+                },
+              }}
+            >
+              <GoogleIcon sx={{ color: "#DB4437", mr: 1 }} />
+              <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                Sign in with Google
+              </Typography>
+            </IconButton>
+          </Box>
+
+          <Typography
+            variant="body2"
+            sx={{
+              mt: 2,
+              textAlign: "center",
+              cursor: "pointer",
+              color: "primary.main",
+              "&:hover": { textDecoration: "underline" },
+            }}
+            onClick={() => setIsSignUp(!isSignUp)}
+          >
+            {isSignUp
+              ? "Already have an account? Login"
+              : "Don't have an account? Sign Up"}
+          </Typography>
+        </CardContent>
+      </Card>
     </Box>
   )
 }
