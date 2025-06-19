@@ -2,8 +2,6 @@
 
 A fast and modern task management application built with **React** and **Vite**. It features a sleek UI, real-time interactivity with HMR, and an extendable architecture for handling your daily to-dos.
 
-![screenshot](./screenshot.png) <!-- Optional: Add an actual screenshot of the app -->
-
 ## ⚡ Tech Stack
 
 - **[React](https://reactjs.org/)** – Front-end UI library
